@@ -33,10 +33,12 @@ def yield_pron(
     config: "Config",
 ) -> "Iterator[str]":
     for ipa_element in request_html.xpath(ipa_xpath_selector):
+        # print(f'{ipa_element.text = }')
         m = re.search(config.ipa_regex, ipa_element.text)
         if not m:
             continue
         pron = m.group(1)
+        # print(f'{pron = }')
         # Removes parens around various segments unless --keep-parens is used.
         pron = _handle_parens(pron, config.skip_parens)
         if _skip_pron(pron, config.skip_spaces_pron):

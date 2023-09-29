@@ -12,11 +12,12 @@ if typing.TYPE_CHECKING:
     from wikipron.typing import Iterator, WordPronPair
 
 
-IPA_XPATH_SELECTOR = '//span[@class = "IPA"]'
+IPA_XPATH_SELECTOR = '//span[@class = "ipa"]'
 
 
 def _yield_phn(request: requests_html, config: "Config") -> "Iterator[str]":
     for pron_element in request.html.xpath(config.pron_xpath_selector):
+        # print(f'{pron_element = }')
         yield from yield_pron(pron_element, IPA_XPATH_SELECTOR, config)
 
 

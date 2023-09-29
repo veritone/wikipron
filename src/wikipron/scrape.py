@@ -13,9 +13,9 @@ from wikipron.typing import Iterator, WordPronPair
 
 # Queries for the MediaWiki backend.
 # Documentation here: https://www.mediawiki.org/wiki/API:Categorymembers
-_CATEGORY_TEMPLATE = "Category:{language} terms with IPA pronunciation"
+_CATEGORY_TEMPLATE = "Kategorie:Deutsch"
 # Selects the content on the page.
-_PAGE_TEMPLATE = "https://en.wiktionary.org/wiki/{word}"
+_PAGE_TEMPLATE = "https://de.wiktionary.org/wiki/{word}"
 # Http headers for api call
 HTTP_HEADERS = {
     "User-Agent": (
@@ -49,6 +49,7 @@ def _skip_date(date_from_word: str, cut_off_date: str) -> bool:
 def _scrape_once(data, config: Config) -> Iterator[WordPronPair]:
     session = requests_html.HTMLSession()
     for member in data["query"]["categorymembers"]:
+        # print(f'{member = }')
         title = member["title"]
         timestamp = member["timestamp"]
         config.restart_key = member["sortkey"]
@@ -96,7 +97,7 @@ def scrape(config: Config) -> Iterator[WordPronPair]:
     }
     while True:
         data = requests.get(
-            "https://en.wiktionary.org/w/api.php?",
+            "https://de.wiktionary.org/w/api.php?",
             params=requests_params,
             headers=HTTP_HEADERS,
         ).json()

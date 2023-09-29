@@ -17,14 +17,16 @@ from wikipron.typing import ExtractFunc
 # GH-50: Korean has an extra "span" layer (for fonts) in //li[span[sup[a.
 # Some (but not all) Moksha pronunciations reside in //p[sup[a.
 _PRON_XPATH_SELECTOR_TEMPLATE = """
-(//li|//p)[
-  (.|span)[sup[a[
+(//li|//p|//dd)[
+  (.|span)[(.|sup)[a[
     @title = "Appendix:{language} pronunciation"
     or
     @title = "wikipedia:{language} phonology"
+    or
+    @title = "Hilfe:IPA"
   ]]]
   and
-  span[@class = "IPA"]
+  span[@class = "ipa"]
   {dialect_selector}
 ]
 """
@@ -33,8 +35,8 @@ _DIALECT_XPATH_SELECTOR_TEMPLATE = (
     '  (span[@class = "ib-content qualifier-content" and a[{dialects_text}]]\n'
     '   or count(span[@class = "ib-content qualifier-content"]) = 0)'
 )
-_PHONEMES_REGEX = r"/(.+?)/"
-_PHONES_REGEX = r"\[(.+?)\]"
+_PHONEMES_REGEX = r"(.+)"
+_PHONES_REGEX = r"(.+)"
 
 _TONES_REGEX = r"[˥˦˧˨˩⁰¹²³⁴⁵⁶⁷⁸⁹⁻◌̋ ◌̌ ◌̏ ◌̀ ◌́ ◌̂ ◌̄ ◌᷄◌᷅◌᷆◌᷇◌᷈◌᷉↑↓↗↘]"
 _PARENS_REGEX = rf"⁽{_TONES_REGEX}+⁾"
